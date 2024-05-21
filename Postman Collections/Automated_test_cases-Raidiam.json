@@ -80,6 +80,18 @@
 						"url": "http://localhost:8080/test-api/consents/v1/consents/{{consentId}}"
 					},
 					"response": []
+				},
+				{
+					"name": "New Request",
+					"id": "d646881e-c299-49e4-9f13-a011893a03c1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			],
 			"id": "c3dbf148-db82-4321-9f1f-7f9a1d938878"
