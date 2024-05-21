@@ -1,4 +1,4 @@
-# Technical-Task Open Customer Data API
+# Technical Task - Open Customer Data API
 
 ## Documents location:
 - Test Case and Bugs reports are in the 'Documents/Test Cases and Bugs' path- there are 2 tabs one called 'Test Cases' and the other 'Bugs' in each is the corresponding documentation.
