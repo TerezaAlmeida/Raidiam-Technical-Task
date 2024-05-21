@@ -1,0 +1,360 @@
+{
+	"info": {
+		"_postman_id": "2a2bf210-7b65-456a-9fb1-4ae915a552b3",
+		"name": "Tech-Task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Consents",
+			"item": [
+				{
+					"name": "Create consents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "48b4f715-c21c-488b-b78d-07d58ae5d338",
+								"exec": [
+									"pm.test(\"Save consentId\", function () {\r",
+									"    var responseJson = pm.response.json();\r",
+									"    pm.environment.set(\"consentId\", responseJson.data.consentId);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "8dec635f-4f19-4315-aecf-32a456e0b76f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiAibm9uZSIsInR5cCI6ICJKV1QifQ==.eyJzY29wZSI6ICJjb25zZW50cyIsImNsaWVudF9pZCI6ICJjbGllbnQxIn0=."
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"data\": {\r\n    \"permissions\": \"ACCOUNTS_READ\",\r\n    \"expirationDateTime\": \"2024-12-21T13:54:31Z\"\r\n  }\r\n}"
+						},
+						"url": "http://localhost:8080/test-api/consents/v1/consents"
+					},
+					"response": []
+				},
+				{
+					"name": "Update consents",
+					"id": "766de41d-685b-498b-bf2c-ff4a7841fe6c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiAibm9uZSIsInR5cCI6ICJKV1QifQ==.eyJzY29wZSI6ICJjb25zZW50cyIsImNsaWVudF9pZCI6ICJjbGllbnQxIn0=."
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"data\": {\r\n    \"status\": \"AUTHORISED\"\r\n  }\r\n}"
+						},
+						"url": "http://localhost:8080/test-api/consents/v1/consents/{{consentId}}"
+					},
+					"response": []
+				}
+			],
+			"id": "c3dbf148-db82-4321-9f1f-7f9a1d938878"
+		},
+		{
+			"name": "Generate JWS Token",
+			"item": [
+				{
+					"name": "Generate JWT Accounts",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "526dc570-e94d-4a04-bde0-4d0ed94044dc",
+								"exec": [
+									"// JWT generation script adapted\r",
+									"\r",
+									"var jwtSecret = pm.environment.get('jwt_secret') || ''\r",
+									"\r",
+									"// Set headers for JWT\r",
+									"var header = {\r",
+									"\t'alg': 'none',\r",
+									"\t'typ': 'JWT'\r",
+									"};\r",
+									"\r",
+									"var currentTimestamp = Math.floor(Date.now() / 1000)\r",
+									"\r",
+									"// Set payload data\r",
+									"var data = {\r",
+									"\t'scope': 'accounts consent:'+pm.environment.get('consentId'),\r",
+									"\t'client_id': 'client1'\r",
+									"}\r",
+									"\r",
+									"// Function to encode data using base64url\r",
+									"function base64url(source) {\r",
+									"    encodedSource = CryptoJS.enc.Base64.stringify(source)\r",
+									"    \r",
+									"    encodedSource = encodedSource.replace(/=+$/, '')\r",
+									"    \r",
+									"    encodedSource = encodedSource.replace(/\\+/g, '-')\r",
+									"    encodedSource = encodedSource.replace(/\\//g, '_')\r",
+									"    \r",
+									"    return encodedSource\r",
+									"}\r",
+									"\r",
+									"// Encode header\r",
+									"var stringifiedHeader = CryptoJS.enc.Utf8.parse(JSON.stringify(header))\r",
+									"var encodedHeader = base64url(stringifiedHeader)\r",
+									"\r",
+									"// Encode payload data\r",
+									"var stringifiedData = CryptoJS.enc.Utf8.parse(JSON.stringify(data))\r",
+									"var encodedData = base64url(stringifiedData)\r",
+									"\r",
+									"// Build token\r",
+									"var token = `${encodedHeader}==.${encodedData}=.`\r",
+									"\r",
+									"// Output token in console\r",
+									"console.log('Encoded JWT', token)\r",
+									"\r",
+									"// Set token in headers for request\r",
+									"pm.request.headers.add({\r",
+									"    key: 'Authorization',\r",
+									"    value: `${token}`\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "6a7a3513-0a2b-44a3-a822-5b3a9742cc84",
+								"exec": [
+									"var responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Save JWT Token\", function () {\r",
+									"    pm.environment.set(\"jwt_secret\", responseJson.headers.authorization);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "a1fa356e-a6a0-47b4-b8e2-579d3b20fc3e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "https://postman-echo.com/post"
+					},
+					"response": []
+				}
+			],
+			"id": "0f79194f-1428-49de-845d-a9bd3df395e3"
+		},
+		{
+			"name": "Accounts",
+			"item": [
+				{
+					"name": "All Accounts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "697fc8f4-94ad-4ba1-aaaf-7cc108a61730",
+								"exec": [
+									"var responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Save consentId\", function () {\r",
+									"    pm.environment.set(\"accountId\", responseJson.data[1].id);\r",
+									"});\r",
+									"//POSITIVE SCENARIOS\r",
+									"pm.test(\"Status code 200\", function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response has account array\", function(){\r",
+									"    pm.expect(responseJson).to.have.property('data');\r",
+									"    pm.expect(responseJson.data).to.be.an('array').that.is.not.empty;\r",
+									"})\r",
+									"//NEGATIVE SCENARIO\r",
+									"pm.test(\"Status code is 401 for unauthorized request\", function(){\r",
+									"    pm.sendRequest({\r",
+									"        url: 'http://localhost:8080/test-api/account/v1/accounts',\r",
+									"        method: 'GET',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json',\r",
+									"            'Authorization': 'invalidToken'\r",
+									"        }\r",
+									"    }, function (err, res) {\r",
+									"        pm.expect(res).to.have.status(401);\r",
+									"    });\r",
+									"})\r",
+									"//EDGE CASE SCENARIO\r",
+									"pm.test(\"Send request invalid accountId format\", function () {\r",
+									"    pm.sendRequest({\r",
+									"        url: 'http://localhost:8080/test-api/account/v1/accounts/!@#$%',\r",
+									"        method: 'GET',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json',\r",
+									"            'Authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"        }\r",
+									"    }, function (err, res) {\r",
+									"        pm.test(\"Correct status code for invalid accountId format\", function () {\r",
+									"            pm.expect(res).to.have.status(400);\r",
+									"        });\r",
+									"        if(res.status !== 400){\r",
+									"        console.log('Expected status code 400, but got: '+ res.code);\r",
+									"        }\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "062c19ae-a2e5-4d2e-8a9e-0fad4a19111b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "761f3e6c-344e-4608-b432-d6262237ef0d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{jwt_secret}}"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": "http://localhost:8080/test-api/account/v1/accounts"
+					},
+					"response": []
+				},
+				{
+					"name": "Specific Account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5564979e-5210-4033-8b83-6b254f78a423",
+								"exec": [
+									"var responseJson = pm.response.json();\r",
+									"var baseUrl = 'http://localhost:8080/account/v1/account/'\r",
+									"//POSITIVE SCENARIO\r",
+									"pm.test(\"Response structure is correct\", function () {\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"    pm.expect(responseJson.data).to.have.property(\"id\");\r",
+									"    pm.expect(responseJson.data).to.have.property(\"bank\");\r",
+									"    pm.expect(responseJson.data).to.have.property(\"accountNumero\");\r",
+									"});\r",
+									"//NEGATIVE SCENARIO\r",
+									"pm.test(\"Send request invalid accountId\", function () {\r",
+									"    pm.sendRequest({\r",
+									"        url: baseUrl+'invalid-account-id',\r",
+									"        method: 'GET',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json',\r",
+									"            'Authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"        }\r",
+									"    }, function (err, res) {\r",
+									"        pm.test(\"Invalid accountId status code is 404\", function () {\r",
+									"            pm.expect(res).to.have.status(404);\r",
+									"        });\r",
+									"        if(res.status !== 404){\r",
+									"            console.log('Expected status code 404, but got: '+ res.code);\r",
+									"        }\r",
+									"    });\r",
+									"});\r",
+									"//EDGE CASE SCENARIO\r",
+									"pm.test(\"Send request large accountId\", function () {\r",
+									"    pm.sendRequest({\r",
+									"        url: baseUrl+'99999999999999999999999999999999',\r",
+									"        method: 'GET',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json',\r",
+									"            'Authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"        }\r",
+									"    }, function (err, res) {\r",
+									"        pm.test(\"Large accountId length returns 404\", function () {\r",
+									"            pm.expect(res).to.have.status(404);\r",
+									"        });\r",
+									"        if(res.status !== 404){\r",
+									"            console.log('Expected status code 404, but got: '+ res.code);\r",
+									"        }\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "c39213f3-ea8e-4b04-b5ca-1aed5508c119",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{jwt_secret}}"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": "http://localhost:8080/test-api/account/v1/account/{{accountId}}"
+					},
+					"response": []
+				}
+			],
+			"id": "bb0d7b38-9122-4930-ad34-c84a5d7a4d86"
+		}
+	]
+}
