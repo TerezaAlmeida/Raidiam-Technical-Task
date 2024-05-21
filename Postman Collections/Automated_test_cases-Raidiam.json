@@ -80,21 +80,33 @@
 						"url": "http://localhost:8080/test-api/consents/v1/consents/{{consentId}}"
 					},
 					"response": []
-				},
-				{
-					"name": "New Request",
-					"id": "d646881e-c299-49e4-9f13-a011893a03c1",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
 				}
 			],
-			"id": "c3dbf148-db82-4321-9f1f-7f9a1d938878"
+			"id": "c3dbf148-db82-4321-9f1f-7f9a1d938878",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2f891730-e67b-4411-bef4-f73feae6d59e",
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "8b857c75-e997-43c5-b56e-50bdeb6e377b",
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
 		},
 		{
 			"name": "Generate JWS Token",
