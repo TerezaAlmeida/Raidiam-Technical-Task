@@ -21,7 +21,7 @@
 2. Click on the Import button on the right side of your Workspace name 
 3. Import the Postman Collection folder's content (the 2 files must be imported, Tech-Task and Test Environment)
 4. Change the environment to Test Environment (where the environment variables are)
-5. Expand all 3 folders (consents, Generate JWT, and Accounts), so you can access the requests inside of them
+5. Expand all 3 folders (Consents, Generate JWT, and Accounts), so you can access the requests inside of them
 6. Now you can run the requests in the following order:
    - Create consents
    - Update consents
