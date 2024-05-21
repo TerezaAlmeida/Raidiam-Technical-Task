@@ -1,7 +1,7 @@
 # Technical-Task Open Customer Data API
 
 ## Documents location:
-- Test Case and Bugs reports are in the 'Documents/Test Cases and Bugs' path- there are 2 tabs one called Test Cases and the other Bugs in each one there is the corresponding documentation.
+- Test Case and Bugs reports are in the 'Documents/Test Cases and Bugs' path- there are 2 tabs one called 'Test Cases' and the other 'Bugs' in each is the corresponding documentation.
 - API Documentation Evaluation is in the 'Documents/API Documentation Evaluation' path
 - Security Test Plan is in the 'Documents/Security Test Plan' path
 
@@ -28,6 +28,6 @@
    - Generate JWT Accounts
    - All Accounts*
    - Specific Accounts*
- 9. *The automated test scripts for these requests are in the Tests tab below the API endpoint address.
+ 9. *The automated test scripts for these requests are in the Tests or Scripts tab below the API endpoint address.
  10. *After running the requests the Test Results tab is in the response section.
 
