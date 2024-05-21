@@ -1,21 +1,21 @@
 # Technical-Task
 
-Documents location:
+## Documents location:
 - Test Case and Bugs reports are in the 'Documents/Test Cases and Bugs' path- there are 2 tabs one called Test Cases and the other Bugs in each one there is the corresponding documentation.
 - API Documentation Evaluation is in the 'Documents/API Documentation Evaluation' path
 - Security Test Plan is in the 'Documents/Security Test Plan' path
 
-How to run the Automated Test Cases:
+##How to run the Automated Test Cases:
 
-Requirements:
+###Requirements:
 - Customer Data API up and running on Docker host
 - Postman installed and loged in
 
-Precondition:
+###Precondition:
 1. Clone this repository to your local machine
 2. Open its folder (called Technical-Task)
 
-Steps:
+###Steps:
 
 3. Open Postman and create a Workspace
 4. Click on the Import button on the right side of your Workspace name 
