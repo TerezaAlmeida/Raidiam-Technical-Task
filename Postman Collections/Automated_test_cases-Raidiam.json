@@ -204,6 +204,23 @@
 									"    pm.expect(responseJson.data).to.be.an('array').that.is.not.empty;\r",
 									"})\r",
 									"//NEGATIVE SCENARIO\r",
+									"pm.test(\"Error message for rejected client status\", function(){\r",
+									"    pm.sendRequest({\r",
+									"        url: 'http://localhost:8080/test-api/consents/v1/consents/'+pm.environment.get(consentId),\r",
+									"        method: 'PUT',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json',\r",
+									"            'Authorization': `${pm.environment.get('token')}`\r",
+									"        },\r",
+									"        body:{\r",
+									"            \"data\": {\r",
+									"                \"status\": \"REJECTED\"\r",
+									"            }\r",
+									"        }\r",
+									"    }, function (err, res) {\r",
+									"        pm.expect(res._embedded.errors.message).to.have.property('Consent Id '+pm.environment.get(consentId)+' is not in the right status');\r",
+									"    });\r",
+									"})\r",
 									"pm.test(\"Status code is 401 for unauthorized request\", function(){\r",
 									"    pm.sendRequest({\r",
 									"        url: 'http://localhost:8080/test-api/account/v1/accounts',\r",
@@ -223,7 +240,7 @@
 									"        method: 'GET',\r",
 									"        header: {\r",
 									"            'Content-Type': 'application/json',\r",
-									"            'Authorization': `Bearer ${pm.environment.get('token')}`\r",
+									"            'Authorization': `${pm.environment.get('token')}`\r",
 									"        }\r",
 									"    }, function (err, res) {\r",
 									"        pm.test(\"Correct status code for invalid accountId format\", function () {\r",
@@ -235,7 +252,8 @@
 									"    });\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						},
 						{
@@ -245,7 +263,8 @@
 								"exec": [
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
