@@ -226,7 +226,7 @@
 									"            'Authorization': `${pm.environment.get('token')}`",
 									"        }",
 									"    }, function (err, res) {",
-									"        pm.test(\"Correct status code for invalid accountId format\", function () {",
+									"        pm.test(\"Status code is 400 for invalid accountId format\", function () {",
 									"            pm.expect(res).to.have.status(400);",
 									"        });",
 									"        if(res.status !== 400){",
@@ -285,8 +285,10 @@
 									"var responseJson = pm.response.json();\r",
 									"var baseUrl = 'http://localhost:8080/account/v1/account/'\r",
 									"//POSITIVE SCENARIO\r",
+									"pm.test(\"Status code 200\", function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
 									"pm.test(\"Response structure is correct\", function () {\r",
-									"    pm.expect(pm.response).to.have.status(200);\r",
 									"    pm.expect(responseJson.data).to.have.property(\"id\");\r",
 									"    pm.expect(responseJson.data).to.have.property(\"bank\");\r",
 									"    pm.expect(responseJson.data).to.have.property(\"accountNumero\");\r",
@@ -328,7 +330,8 @@
 									"    });\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
